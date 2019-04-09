@@ -1,0 +1,10 @@
+# Visual Studio
+.vs
+.vscode
+
+
+# Dependency directories
+node_modules
+
+# Optional npm cache directory
+.npm
