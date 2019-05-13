@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/AnnaHotsa/nodejs_team2#readme",
   "dependencies": {
+    "aws-sdk": "^2.454.0",
     "mssql": "^5.1.0"
   }
 }
