@@ -17,7 +17,6 @@
   },
   "homepage": "https://github.com/AnnaHotsa/nodejs_team2#readme",
   "dependencies": {
-    "express": "^4.16.4",
-    "request": "^2.88.0"
+    "mssql": "^5.1.0"
   }
 }
