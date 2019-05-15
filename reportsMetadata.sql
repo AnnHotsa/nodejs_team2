@@ -1,0 +1,8 @@
+CREATE TABLE ReportsMetadata(
+ID  INT IDENTITY(1,1),
+S3Location NVARCHAR(MAX) NOT NULL,
+ReportFrom DATETIME,
+ReportTo DATETIME,
+CreatedDate DATETIME NOT NULL,
+CONSTRAINT PK_ReportsMetadata_Id PRIMARY KEY (ID)
+);
