@@ -38,17 +38,17 @@ exports.handler = async (event, context, callback) => {
         let reportMetadata;
         await sql.connect(config)
             .then((conn) => {
-                return new Promise((resolve, reject) => {
-                    conn.query(query, function (err, recordset) {
-                        if (err) {
-                            reject(err);
-                        } else {
-                            employeeSalesByCountry = recordset;
-                            resolve();
-                        }
-                });
-            })
-            .then(() => {
+                    return new Promise((resolve, reject) => {
+                        conn.query(query, function (err, recordset) {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                employeeSalesByCountry = recordset;
+                                resolve();
+                            }
+                        });
+                    })})
+                .then(() => {
                 //S3
                 var bucketName = process.env.bucketName;
                 var date = new Date().toJSON().slice(0,10).replace(/-/g,'_');
@@ -92,7 +92,7 @@ exports.handler = async (event, context, callback) => {
                 }
             })
             .then(() => conn.close())
-             ).then(callback(null, "Success!"));
+            .then(callback(null, "Success!"));
             
         
     } catch (err) {
