@@ -20,19 +20,22 @@ function dateToSQL(date) {
     + twoDigits(date.getUTCHours()) + ":" + twoDigits(date.getUTCMinutes()) + ":" + twoDigits(date.getUTCSeconds());
 };
 
-function writeReportMetadata(report) {
+async function writeReportMetadata(report) {
     let query = `INSERT INTO ReportsMetadata (S3Location, ReportFrom, ReportTo, CreatedDate)
             VALUES (${report.S3Location}, ${dateToSQL(report.ReportFrom)}, ${dateToSQL(report.ReportTo)}, ${dateToSQL(report.CreatedDate)})`;
     let pool = await sql.connect(config);
-    let response = await pool.request()
-            .query(query);
+    let response = (await pool.request()
+            .query(query)).recordset;
 
 }
 
 exports.handler = async (event, context, callback) => {
     try {
-        let fromDate = new Date(event.fromDate * 1000);
-        let toDate = new Date(event.toDate * 1000);
+        let fromDate = new Date(event.dateFrom);
+        let toDate = new Date(event.dateTo);
+
+        console.log(`Event`);
+        console.log(event);
         console.log(`Message received from queue. From date: ${fromDate}, To date: ${toDate}`);
 
         let query = `SELECT o.ShipCountry,E.EmployeeID, SUM(ODE.ExtendedPrice) FROM Orders O
@@ -41,8 +44,8 @@ exports.handler = async (event, context, callback) => {
             WHERE O.OrderDate BETWEEN ${dateToSQL(fromDate)} AND ${dateToSQL(toDate)}
             GROUP BY O.ShipCountry, E.EmployeeID"`;
         let pool = await sql.connect(config);
-        let employeeSalesByCountry = await pool.request()
-            .query(query);
+        let employeeSalesByCountry = (await pool.request()
+            .query(query)).recordset;
 
         var bucketName = process.env.bucketName;
         var date = new Date().toJSON().slice(0,10).replace(/-/g,'_');
