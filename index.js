@@ -25,7 +25,8 @@ exports.handler = async (event, context, callback) => {
     try {
         let fromDate = new Date(event.dateFrom);
         let toDate = new Date(event.dateTo);
-
+        console.log("Input event:");
+        console.log(event);
         console.log(`Message received from queue. From date: ${fromDate}, To date: ${toDate}`);
         //console.log(`Sql format fromDate: ${dateToSQL(fromDate)}, toDate: ${dateToSQL(toDate)}`);
 
@@ -54,7 +55,7 @@ exports.handler = async (event, context, callback) => {
         });
                 
         let   reportMetadata = {
-                        S3Location: `https://s3-eu-central-1.amazonaws.com/${bucketName}/${keyName}`,
+                        S3Location: `https://s3.eu-central-1.amazonaws.com/${bucketName}/${keyName}`,
                         CreatedDate: new Date(),
                         ReportFrom: fromDate,
                         ReportTo: toDate
