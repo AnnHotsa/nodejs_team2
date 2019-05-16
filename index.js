@@ -1,6 +1,7 @@
 var sql = require("mssql");
 var AWS = require('aws-sdk');
 var s3 = new AWS.S3();
+var uniqid = require('uniqid');
 
 var config = {
     user: 'nodejsteam2',
@@ -40,7 +41,7 @@ exports.handler = async (event, context, callback) => {
         //S3
         var bucketName = process.env.bucketName;
         var date = new Date().toJSON().slice(0,10).replace(/-/g,'_');
-        var keyName = "jsonReports/report_" + date + ".json";
+        var keyName = `jsonReports/report_${date}_${uniqid()}.json`;
         var content = JSON.stringify(employeeSalesByCountry);
 
         var params = { Bucket: bucketName, Key: keyName, Body: content };
