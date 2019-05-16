@@ -23,8 +23,8 @@ function dateToSQL(date) {
 
 exports.handler = async (event, context, callback) => {
     try {
-        let fromDate = new Date(event.dateFrom);
-        let toDate = new Date(event.dateTo);
+        let fromDate = new Date(JSON.parse(event.Records[0].body).dateFrom);
+        let toDate = new Date(JSON.parse(event.Records[0].body).dateTo);
         console.log("Input event:");
         console.log(event);
         console.log(`Message received from queue. From date: ${fromDate}, To date: ${toDate}`);
@@ -70,7 +70,7 @@ exports.handler = async (event, context, callback) => {
         console.log(` Added ${reportMetadatares.rowsAffected} new metadata rows in SQL`);
         console.log(employeeSalesByCountry);
         pool.close();
-        
+        sql.close();
         callback(null, "Success!");
     }
      catch (err) {
