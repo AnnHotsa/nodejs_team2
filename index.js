@@ -37,9 +37,16 @@ exports.handler = async (event, context, callback) => {
         let employeeSalesByCountry;
         let reportMetadata;
         await sql.connect(config)
-            .then((conn) => conn.query(query, function (err, recordset) {
-                if (err) callback(err);
-                    employeeSalesByCountry = recordset;
+            .then((conn) => {
+                return new Promise((resolve, reject) => {
+                    conn.query(query, function (err, recordset) {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            employeeSalesByCountry = recordset;
+                            resolve();
+                        }
+                });
             })
             .then(() => {
                 //S3
